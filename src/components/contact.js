@@ -13,13 +13,21 @@ class Contact extends Component {
     showClick = (e) => {
         this.setState({showInfo: ! this.state.showInfo})
     }
+
+    deleteContact = () => {
+        this.props.deleteContact();
+    }
     render() {
         const {name, email, phone} = this.props.contact;
         const {showInfo} = this.state;
         return (
                 <div className="card card-body mb-3">
                     <h4 className="mb-3">{name}
-                     <i onClick={this.showClick}>-</i>
+                     <i onClick={this.showClick} style={{cursor: "pointer"}}>-</i>
+                     <i className="float-right text-danger" 
+                        style={{cursor: "pointer"}} onClick={this.deleteContact}>
+                         delete
+                     </i>
                     </h4>
                     {showInfo ? 
                         <ul className="list-group">
@@ -36,7 +44,8 @@ class Contact extends Component {
 }
 
 Contact.propTypes = {
-    contact: PropTypes.object.isRequired
+    contact: PropTypes.object.isRequired,
+    deleteContact: PropTypes.func.isRequired
 }
 
 export default Contact;
