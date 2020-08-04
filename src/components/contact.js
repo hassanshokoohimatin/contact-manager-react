@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import {Consumer} from '../Context';
 
 class Contact extends Component {
 
@@ -14,38 +15,46 @@ class Contact extends Component {
         this.setState({showInfo: ! this.state.showInfo})
     }
 
-    deleteContact = () => {
-        this.props.deleteContact();
+    deleteContact = (id, dispatch) => {
+        dispatch({type: "DELETE_CONTACT", payload: id})
     }
     render() {
-        const {name, email, phone} = this.props.contact;
+        const {id, name, email, phone} = this.props.contact;
         const {showInfo} = this.state;
         return (
-                <div className="card card-body mb-3">
-                    <h4 className="mb-3">{name}
-                     <i onClick={this.showClick} style={{cursor: "pointer"}}>-</i>
-                     <i className="float-right text-danger" 
-                        style={{cursor: "pointer"}} onClick={this.deleteContact}>
-                         delete
-                     </i>
-                    </h4>
-                    {showInfo ? 
-                        <ul className="list-group">
-                            <li className="list-group-item">Email: {email}</li>
-                            <li className="list-group-item">Phone: {phone}</li>
-                        </ul>
-                              :
-                        null
-                    }
+
+            <Consumer>
+                {value => {
+                    const {dispatch} = value;
+                    return(
+                        <div className="card card-body mb-3">
+                            <h4 className="mb-3">{name}
+                            <i onClick={this.showClick} style={{cursor: "pointer"}}>-</i>
+                            <i className="float-right text-danger" 
+                                style={{cursor: "pointer"}} 
+                                onClick={this.deleteContact.bind(this, id, dispatch)}>
+                                delete
+                            </i>
+                            </h4>
+                                    {showInfo ? 
+                                        <ul className="list-group">
+                                            <li className="list-group-item">Email: {email}</li>
+                                            <li className="list-group-item">Phone: {phone}</li>
+                                        </ul>
+                                            :
+                                        null
+                                    }
                     
-                </div>
+                        </div>
+                    )
+                }}
+            </Consumer>
         )
     }
 }
 
 Contact.propTypes = {
-    contact: PropTypes.object.isRequired,
-    deleteContact: PropTypes.func.isRequired
+    contact: PropTypes.object.isRequired
 }
 
 export default Contact;
