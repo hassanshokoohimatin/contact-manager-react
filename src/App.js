@@ -8,10 +8,12 @@ class App extends Component{
     render(){
         return(
             <div className="App">
-                <Header branding="Conatc List Manager" />
-                <Contact name="Ali Mohammadi" email="ali@gmail.com" phone="123456789" />
-                <Contact name="Hassan Shokoohi" email="hassan@gmail.com" phone="123456789" />
-                <Contact name="Amin Hoseyni" email="amin@gmail.com" phone="123456789" />
+                <Header />
+                <div className="container">
+                    <Contact name="Ali Mohammadi" email="ali@gmail.com" phone="123456789" />
+                    <Contact name="Hassan Shokoohi" email="hassan@gmail.com" phone="123456789" />
+                    <Contact name="Amin Hoseyni" email="amin@gmail.com" phone="123456789" />
+                </div>
             </div>
         )
     }
