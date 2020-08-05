@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Consumer} from '../Context';
+import {Consumer} from '../../Context';
 
 class Contact extends Component {
 
@@ -12,7 +12,7 @@ class Contact extends Component {
     }
 
     showClick = (e) => {
-        this.setState({showInfo: ! this.state.showInfo})
+        this.setState({showInfo: !this.state.showInfo})
     }
 
     deleteContact = (id, dispatch) => {
