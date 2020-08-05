@@ -29,11 +29,11 @@ class Contact extends Component {
                     return(
                         <div className="card card-body mb-3">
                             <h4 className="mb-3">{name}
-                            <i onClick={this.showClick} style={{cursor: "pointer"}}>-</i>
-                            <i className="float-right text-danger" 
+                            <i  className="fas fa-sort-down"
+                                onClick={this.showClick} style={{cursor: "pointer"}}></i>
+                            <i className="float-right text-danger fas fa-times" 
                                 style={{cursor: "pointer"}} 
                                 onClick={this.deleteContact.bind(this, id, dispatch)}>
-                                delete
                             </i>
                             </h4>
                                     {showInfo ? 
