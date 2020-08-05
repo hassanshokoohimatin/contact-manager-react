@@ -38,6 +38,7 @@ export default class AddContact extends Component {
             phone
         }
         dispatch({type: 'ADD_CONTACT', payload: contact});
+        this.props.history.push('/'); 
     }
     render() {
         const {name, email, phone, error} = this.state;
