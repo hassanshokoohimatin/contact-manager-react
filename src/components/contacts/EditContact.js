@@ -4,7 +4,7 @@ import uuid from 'uuid';
 import TextInput from '../layout/TextInput';
 import axios from 'axios';
 
-export default class AddContact extends Component {
+export default class EditContact extends Component {
 
     state = {
         name: '',
@@ -17,34 +17,18 @@ export default class AddContact extends Component {
         this.setState({[e.target.name]: e.target.value})
     }
 
-    addContact = async (dispatch, e) => {
-        e.preventDefault();
-        const {name, email, phone} = this.state;
-        if(name === ''){
-            this.setState({error: {name: 'Name is required'}});
-            return;
-        }
-        if(email === ''){
-            this.setState({error: {email: 'Email is required'}});
-            return;
-        }
-        if(phone === ''){
-            this.setState({error: {phone: 'Phone is required'}});
-            return;
-        }
-        const contact = {
-            id: uuid.v4(),
-            name,
-            email,
-            phone
-        }
-
-        const res = await axios.post('https://jsonplaceholder.typicode.com/users', contact);
-
-        dispatch({type: 'ADD_CONTACT', payload: res.data});
-
-        this.props.history.push('/'); 
+    async componentDidMount(){
+        const id = this.props.match.params.id;
+        const res = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
+        const contact = res.data;
+        this.setState({
+            name: contact.name,
+            email: contact.email,
+            phone: contact.phone,
+            error: {}
+        })
     }
+
     render() {
         const {name, email, phone, error} = this.state;
         return(
@@ -55,7 +39,7 @@ export default class AddContact extends Component {
                         <div className="card mb-3">
                             <div className="card-header">Add Contact</div>
                             <div className="card-body">
-                                <form onSubmit={this.addContact.bind(this, dispatch)}>
+                                <form>
                                     <TextInput label="Name" name="name" value={name}
                                                placeholder="Enter Name"
                                                onChange={this.onStateChange}
@@ -71,7 +55,7 @@ export default class AddContact extends Component {
                                                onChange={this.onStateChange}
                                                error={error.phone} />
                                     <div>
-                                        <input type="submit" value="Add Contact" className="btn btn-light btn-block" />
+                                        <input type="submit" value="Update Contact" className="btn btn-light btn-block" />
                                     </div>
                                 </form>
                             </div>
