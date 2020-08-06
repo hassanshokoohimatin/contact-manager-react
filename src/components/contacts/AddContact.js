@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Consumer} from '../../Context';
 import uuid from 'uuid';
 import TextInput from '../layout/TextInput';
+import axios from 'axios';
 
 export default class AddContact extends Component {
 
@@ -37,7 +38,12 @@ export default class AddContact extends Component {
             email,
             phone
         }
-        dispatch({type: 'ADD_CONTACT', payload: contact});
+
+        axios.post('https://jsonplaceholder.typicode.com/users', contact)
+             .then(res => {
+                 dispatch({type: 'ADD_CONTACT', payload: res.data})
+                })
+             .catch(err => console.log(err))
         this.props.history.push('/'); 
     }
     render() {
