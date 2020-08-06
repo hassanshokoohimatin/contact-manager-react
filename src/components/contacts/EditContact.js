@@ -17,6 +17,42 @@ export default class EditContact extends Component {
         this.setState({[e.target.name]: e.target.value})
     }
 
+    updateContact = async (dispatch, e) => {
+        e.preventDefault();
+        const id = this.props.match.params.id;
+        const {name, email, phone} = this.state;
+        if(name === ''){
+            this.setState({error: {name: 'Name Is Required'}});
+            return;
+        }
+        if(email === ''){
+            this.setState({error: {email: 'Email Is Required'}});
+            return;
+        }
+        if(phone === ''){
+            this.setState({error: {phone: 'Phone Is Required'}});
+            return;
+        }
+
+        const data = {
+            id,
+            name,
+            email,
+            phone
+        }
+
+        const res = await axios.put(`https://jsonplaceholder.typicode.com/users/${id}`, data);
+        dispatch({type: 'UPDATE_CONTACT', payload: res.data});
+
+        this.setState({
+            name: '',
+            email: '',
+            phone: ''
+        });
+
+        this.props.history.push('/');
+    }
+
     async componentDidMount(){
         const id = this.props.match.params.id;
         const res = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
@@ -39,7 +75,7 @@ export default class EditContact extends Component {
                         <div className="card mb-3">
                             <div className="card-header">Add Contact</div>
                             <div className="card-body">
-                                <form>
+                                <form onSubmit={this.updateContact.bind(this, dispatch)}>
                                     <TextInput label="Name" name="name" value={name}
                                                placeholder="Enter Name"
                                                onChange={this.onStateChange}
